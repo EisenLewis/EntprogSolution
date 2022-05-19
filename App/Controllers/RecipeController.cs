@@ -27,9 +27,17 @@ namespace App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Recipe model)
         {
+            //Make sure AddAsync completes before executing SaveChangesAsync
             await con.Set<Recipe>().AddAsync(model);
             await con.SaveChangesAsync();
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
             return RedirectToAction("Index");
         }
     }
