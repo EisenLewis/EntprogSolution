@@ -1,16 +1,21 @@
-﻿@model Recipe
+﻿@model RecipeVM
 
 <h3>Create a New Recipe</h3>
 
 <form asp-controller="Recipe" asp-action="Add" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
     <label asp-for="Name"></label>
     <input asp-for="Name" class="form-control" />
+    <span class="text-danger" asp-validation-for="Name"></span>
     <br />
     <label asp-for="Description"></label>
     <input asp-for="Description" class="form-control" />
+    <span class="text-danger" asp-validation-for="Description"></span>
     <br />
     <label asp-for="ServingSize"></label>
     <input asp-for="ServingSize" class="form-control" />
+    <span class="text-danger" asp-validation-for="ServingSize"></span>
     <br />
     <a asp-controller="Recipe" asp-action="Index"
         class="btn btn-secondary">

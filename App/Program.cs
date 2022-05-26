@@ -1,3 +1,4 @@
+using App.Configuration;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("Default"));
 });
+
+builder.Services.AddAutoMapper(typeof(MapConfig));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
