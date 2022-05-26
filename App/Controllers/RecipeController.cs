@@ -19,7 +19,10 @@ namespace App.Controllers
         public IActionResult Index()
         {
             //Get all recipe records
-            return View(mapper.Map<List<RecipeVM>>(con.Set<Recipe>().ToList()));
+            List<RecipeVM> vmList = mapper.Map<List<RecipeVM>>(
+                con.Set<Recipe>().Where(x => x.Id > 0).ToList());
+
+            return View(vmList);
         }
 
         public IActionResult Add()
