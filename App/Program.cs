@@ -1,4 +1,5 @@
 using App.Configuration;
+using App.Repository;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MapConfig));
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

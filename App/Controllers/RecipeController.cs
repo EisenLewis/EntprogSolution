@@ -1,4 +1,5 @@
-﻿using App.ViewModels;
+﻿using App.Repository;
+using App.ViewModels;
 using AutoMapper;
 using DatabaseModel;
 using Microsoft.AspNetCore.Mvc;
@@ -7,20 +8,20 @@ namespace App.Controllers
 {
     public class RecipeController : Controller
     {
-        private readonly AppDbContext con;
+        private readonly IRecipeRepository repo;
         private readonly IMapper mapper;
 
-        public RecipeController(AppDbContext context, IMapper mapper)
+        public RecipeController(IRecipeRepository repo, IMapper mapper)
         {
-            con = context;
+            this.repo = repo;
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //Get all recipe records
             List<RecipeVM> vmList = mapper.Map<List<RecipeVM>>(
-                con.Set<Recipe>().Where(x => x.Id > 0).ToList());
+                await repo.GetAllAsync());
 
             return View(vmList);
         }
@@ -36,9 +37,7 @@ namespace App.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                //Make sure AddAsync completes before executing SaveChangesAsync
-                await con.Set<Recipe>().AddAsync(mapper.Map<Recipe>(model));
-                await con.SaveChangesAsync();
+                await repo.AddAsync(mapper.Map<Recipe>(model));
 
                 return RedirectToAction("Index");
             }
@@ -52,6 +51,8 @@ namespace App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            await repo.DeleteAsync(id);
+
             return RedirectToAction("Index");
         }
     }
